@@ -27,10 +27,9 @@ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F9FDA6BED73CDC22
 sudo apt update -qq
 
 # Install general utilities
-sudo apt install git htop lame net-tools flatpak audacity \
-openssh-server sshfs simplescreenrecorder nano \
-vlc gthumb gnome-tweaks ubuntu-restricted-extras thunderbird \
-ffmpeg ufw \
+sudo apt install git flatpak \
+openssh-server nano \
+vlc gthumb gnome-tweaks ubuntu-restricted-extras \
 gnome-tweak-tool spell synaptic -y -qq
 
 # Install drivers
@@ -43,7 +42,7 @@ sudo apt install libinput-tools xdotool ruby -y -qq
 sudo gem install --silent fusuma
 
 # Install Howdy for facial recognition
-while true; do
+while false; do
   read -p "Facial recognition with Howdy (y/n)?" choice
   case "$choice" in 
     y|Y ) 
@@ -67,36 +66,10 @@ sudo apt install gnome-software-plugin-flatpak -y
 
 sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
-# Install Icon Theme
-[[ -d /tmp/tela-icon-theme ]] && rm -rf /tmp/tela-icon-theme
-git clone https://github.com/vinceliuice/Tela-icon-theme.git /tmp/tela-icon-theme > /dev/null 2>&1
-/tmp/tela-icon-theme/install.sh -a
-
-gsettings set org.gnome.desktop.interface icon-theme 'Tela-grey-dark'
-
-# Add Plata-theme
-sudo add-apt-repository ppa:tista/plata-theme -y > /dev/null 2>&1
-sudo apt update -qq && sudo apt install plata-theme -y
-
-gsettings set org.gnome.desktop.interface gtk-theme "Plata-Noir"
-gsettings set org.gnome.desktop.wm.preferences theme "Plata-Noir"
-
-# Enable Shell Theme
-
-sudo apt install gnome-shell-extensions -y
-gnome-extensions enable user-theme@gnome-shell-extensions.gcampax.github.com
-gsettings set org.gnome.shell.extensions.user-theme name "Plata-Noir"
-
-# Install fonts
-sudo apt install fonts-firacode fonts-open-sans -y -qq
-
-gsettings set org.gnome.desktop.interface font-name 'Open Sans 12'
-gsettings set org.gnome.desktop.interface monospace-font-name 'Fira Code 13'
-
 # Setup Development tools
 
 ## Update python essentials
-sudo apt install python3 python3-pip python-is-python3 -y
+sudo apt install python3 python3-pip python-is-python3 python3-testresources -y
 sudo python3 -m pip install -U pip setuptools wheel
 python3 -m pip install --user black
 
@@ -118,62 +91,62 @@ sudo install -o root -g root -m 644 /tmp/packages.microsoft.gpg /usr/share/keyri
 sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
 
 
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) \
-   stable" > /dev/null 2>&1
-sudo apt update -qq && sudo apt install docker-ce docker-ce-cli docker-compose containerd.io code -y
+#curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+#sudo add-apt-repository \
+#   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+#   $(lsb_release -cs) \
+#   stable" > /dev/null 2>&1
+#sudo apt update -qq && sudo apt install docker-ce docker-ce-cli docker-compose containerd.io code -y
 
 ## Post installation for docker
 
-sudo groupadd -f docker
-sudo usermod -aG docker $USER
+#sudo groupadd -f docker
+#sudo usermod -aG docker $USER
 
 ## Post installation for code (sensible defaults)
 
 code --install-extension ms-python.python
 code --install-extension visualstudioexptteam.vscodeintellicode
 code --install-extension eamodio.gitlens
-code --install-extension ms-azuretools.vscode-docker
+#code --install-extension ms-azuretools.vscode-docker
 
 
 ## Install Go
-wget https://golang.org/dl/go1.17.2.linux-amd64.tar.gz -O /tmp/go1.17.2.linux-amd64.tar.gz
-sudo tar -C /usr/local -xzf /tmp/go1.17.2.linux-amd64.tar.gz
+#wget https://golang.org/dl/go1.17.2.linux-amd64.tar.gz -O /tmp/go1.17.2.linux-amd64.tar.gz
+#sudo tar -C /usr/local -xzf /tmp/go1.17.2.linux-amd64.tar.gz
 
-if ! grep -qF "export PATH=\$PATH:/usr/local/go/bin" /etc/profile; then
-  sudo sh -c 'echo "export PATH=\$PATH:/usr/local/go/bin" >> /etc/profile'
-fi
+#if ! grep -qF "export PATH=\$PATH:/usr/local/go/bin" /etc/profile; then
+#  sudo sh -c 'echo "export PATH=\$PATH:/usr/local/go/bin" >> /etc/profile'
+#fi
 
 ## Install dotnet-core sdk + runtime
-wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-sudo dpkg -i packages-microsoft-prod.deb
+#wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+#sudo dpkg -i packages-microsoft-prod.deb
 
-sudo apt-get update
-sudo apt-get install -y dotnet-sdk-5.0
-sudo apt-get install -y aspnetcore-runtime-5.0
+#sudo apt-get update
+#sudo apt-get install -y dotnet-sdk-5.0
+#sudo apt-get install -y aspnetcore-runtime-5.0
 
 sudo flatpak install postman -y
 
 ## Node.JS + Yarn Install
 
-echo "Installing Node 14 JS LTS"
-curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-sudo apt-get install -y nodejs 
-curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list 
-sudo apt-get update -qq && sudo apt-get install -y yarn
+#echo "Installing Node 14 JS LTS"
+#curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+#sudo apt-get install -y nodejs 
+#curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+#echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list 
+#sudo apt-get update -qq && sudo apt-get install -y yarn
 
 
 # Setup GNOME material shell (Need Node.js for compilation of the Typescript extension)
 
-git clone -b 3.38 https://github.com/PapyElGringo/material-shell.git ~/material-shell || true
-make -C ~/material-shell/ install
+#git clone -b 3.38 https://github.com/PapyElGringo/material-shell.git ~/material-shell || true
+#make -C ~/material-shell/ install
 
 
 # Setup Android Studio for Mobile Development
-while true; do
+while false; do
   read -p "Mobile development (Android) (y/n)?" choice
   case "$choice" in 
     y|Y ) 
